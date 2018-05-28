@@ -8,6 +8,7 @@ import os
 
 
 class InstagramDownloaderTest(unittest.TestCase):
+    """This class download instagram account photos."""
     account_to_download_user = ""
     username = ""
     password = ""
@@ -19,6 +20,7 @@ class InstagramDownloaderTest(unittest.TestCase):
         self.browser.quit()
 
     def login_instagram(self):
+        """This function login to instagram if user and password given"""
         self.browser.get('https://www.instagram.com/accounts/login/')
         time.sleep(2)
         inputbox = self.browser.find_element_by_name('username')
@@ -30,7 +32,8 @@ class InstagramDownloaderTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(2)
 
-    def test_can_start_a_list_and_retrieve_it_later(self):
+    def test_downloader(self):
+        """This function download instagram account photos"""
 
         # make sure that account name not empty
         self.assertTrue(len(self.account_to_download_user) > 0, "User is empty")
@@ -40,21 +43,17 @@ class InstagramDownloaderTest(unittest.TestCase):
 
         # open account page
         self.browser.get('https://www.instagram.com/%s' % self.account_to_download_user)
-        SCROLL_PAUSE_TIME = 2
-
-        # Get scroll height
+        pause_time = 2
         last_height = self.browser.execute_script("return document.body.scrollHeight")
-
         images_list = []
         while True:
             # Scroll down to bottom
             self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
             # Wait to load page
-            time.sleep(SCROLL_PAUSE_TIME)
-
+            time.sleep(pause_time)
             # Calculate new scroll height and compare with last scroll height
             new_height = self.browser.execute_script("return document.body.scrollHeight")
+            # Exit if the height does not change
             if new_height == last_height:
                 break
             last_height = new_height
